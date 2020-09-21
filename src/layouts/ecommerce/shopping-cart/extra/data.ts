@@ -21,7 +21,7 @@ export class Product {
   static pinkChair(): Product {
     return new Product(
       0,
-      'Pink Chair',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis magna id felis ornare sodales. Aenean vel euismod lectus, pellentesque suscipit ligula.  ',
       'Furniture',
       require('../assets/image-product-1.png'),
       130,
@@ -32,7 +32,7 @@ export class Product {
   static blackLamp(): Product {
     return new Product(
       1,
-      'Black Lamp',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis magna id felis ornare sodales. Aenean vel euismod lectus, pellentesque suscipit ligula. ',
       'Lighting',
       require('../assets/image-product-1.png'),
       80,

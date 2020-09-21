@@ -3,6 +3,8 @@ import { Image, StyleSheet, View } from 'react-native';
 import { Button, ListItem, ListItemProps, Text } from '@ui-kitten/components';
 import { CloseIcon, MinusIcon, PlusIcon } from './icons';
 import { Product } from './data';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export type CartItemProps = ListItemProps & {
   index: number;
@@ -14,6 +16,17 @@ export type CartItemProps = ListItemProps & {
 export const CartItem = (props: CartItemProps): React.ReactElement => {
 
   const { style, product, index, onProductChange, onRemove, ...listItemProps } = props;
+
+  
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('@storage_Key')
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch(e) {
+    // error reading value
+  }
+}
+
 
   const decrementButtonEnabled = (): boolean => {
     return product.amount > 1;
@@ -35,6 +48,34 @@ export const CartItem = (props: CartItemProps): React.ReactElement => {
 
     onProductChange(updatedProduct, index);
   };
+
+  const DATA = [
+    {
+      id: "#440",
+      title: "Edition"
+    },
+    {
+      id: "April 01, 2020",
+      title: "Launch Date"
+    },
+    {
+      id: "113",
+      title: "Pages"
+    },
+    {
+      id: "140MB",
+      title: "Size"
+    }
+  ];
+
+  const _renderItem = ({ item }) => (
+    <View style={{ flex: 1}}>
+
+      <Text style={{ textAlign: "center", marginTop: 8, flex: 2 }}>{item.title}</Text>
+      <Text style={{ textAlign: "center", marginTop: 8, flex: 2 }}>{item.id}</Text>
+
+    </View>
+  );
 
   const onPlusButtonPress = (): void => {
     const updatedProduct: Product = new Product(
@@ -58,37 +99,22 @@ export const CartItem = (props: CartItemProps): React.ReactElement => {
         source={product.image}
       />
       <View style={styles.detailsContainer}>
-        <Text
-          category='s1'>
-          {product.title}
-        </Text>
-        <Text
-          appearance='hint'
-          category='p2'>
-          {product.subtitle}
-        </Text>
-        <Text category='s2'>
-          {product.formattedPrice}
-        </Text>
-        <View style={styles.amountContainer}>
-          <Button
-            style={[styles.iconButton, styles.amountButton]}
-            size='tiny'
-            icon={MinusIcon}
-            onPress={onMinusButtonPress}
-            disabled={!decrementButtonEnabled()}
-          />
+        <ScrollView>
           <Text
-            style={styles.amount}
-            category='s2'>
-            {`${product.amount}`}
+            category='s1'>
+            {product.title}
           </Text>
-          <Button
-            style={[styles.iconButton, styles.amountButton]}
-            size='tiny'
-            icon={PlusIcon}
-            onPress={onPlusButtonPress}
+        </ScrollView>
+        <View style={styles.amountContainer}>
+          <FlatList
+            data={DATA}
+            renderItem={_renderItem}
+            keyExtractor={item => item.id}
+            numColumns={1}
+            style={{ flex: 1 }}
+            contentContainerStyle={{ paddingVertical: 20 }}
           />
+
         </View>
       </View>
       <Button
@@ -109,8 +135,8 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   image: {
-    width: 120,
-    height: 144,
+    width: 200,
+    height: 240,
   },
   detailsContainer: {
     flex: 1,
@@ -118,10 +144,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   amountContainer: {
-    position: 'absolute',
+    // position: 'absolute',
     flexDirection: 'row',
-    left: 16,
-    bottom: 16,
+    // left: 16,
+    // bottom: 16,
   },
   amountButton: {
     borderRadius: 16,

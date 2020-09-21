@@ -52,13 +52,9 @@ export default (): React.ReactElement => {
       <List
         data={products}
         renderItem={renderProductItem}
-        ListFooterComponent={renderFooter}
+        // ListFooterComponent={renderFooter}
       />
-      <Button
-        style={styles.checkoutButton}
-        size='giant'>
-        CHECKOUT
-      </Button>
+
     </Layout>
   );
 };
